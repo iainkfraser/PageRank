@@ -1,5 +1,5 @@
 /*
-* (C) Iain Fraser - GPLv2
+* (C) Iain Fraser - GPLv3
 * iainkfraser.blogspot.co.uk
 * Code for #sundayfun article 2. On the original google PageRank algorithm.
 */
