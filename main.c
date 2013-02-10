@@ -181,7 +181,7 @@ int main( int argc, char* argv[] ){
 	float A[n][n] = EXAMPLE2;
 	float r[n] = { [0 ... (n-1) ] = 1.0f };
 	
-	// init columns to be uniform distribution ( even if already so this will work ).
+	// init rows to be uniform distribution ( even if already so this will work ).
 	init_uniform( n, n, A );	
 	init_uniform( 1, n, r );
 
