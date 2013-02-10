@@ -176,30 +176,32 @@ void init_uniform( int n, int m, float A[n][m] ){
 
 
 int main( int argc, char* argv[] ){
-	#define n	3 //12	
+	// I know this is horrible, but it makes it easy to switch examples so screw it! 
+	#define INPUT_MATRIX( m )	\
+		const int n = m ## _N;	\
+		float A[ m ## _N ][ m ## _N ] = m;	\
+		float r[ m ## _N ] = { [ 0 ... ( ( m ## _N ) - 1 ) ] = 1.0f }
 
-	float A[n][n] = EXAMPLE2;
-	float r[n] = { [0 ... (n-1) ] = 1.0f };
+	// TODO: Change this to one of the examples 
+	INPUT_MATRIX( SIMPLE );
 	
 	// init rows to be uniform distribution ( even if already so this will work ).
 	init_uniform( n, n, A );	
 	init_uniform( 1, n, r );
 
-	// convert to google matrix
-#ifdef GOOGLEMATRIX 
+#ifdef _GOOGLEMATRIX	 
 	google_matrix( n, A, DAMP_FACTOR );
-#else
-	fix_danglelink( n, A );		// if not using google matrix we still need to fix dangling links
+#else		// if not using google matrix we still need to fix dangling links
+	fix_danglelink( n, A );	
 #endif
 	
-	// output the inital matrix
 #ifdef _VERBOSE
 	printf("T:\n");	
 	mat_print( n, n, A );
 	printf("\n");
 #endif
 
-#ifdef GOOGLEMATRIX	// incoporate teleportation into intial matrix
+#ifdef _GOOGLEMATRIX	// incoporate teleportation into intial matrix
 	eigenvector( n, r, A );
 #else			// do teleportation every iteration
 	PageRank( n, r, A );
