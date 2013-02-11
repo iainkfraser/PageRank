@@ -4,17 +4,20 @@
 * Code for #sundayfun article 2. On the original google PageRank algorithm.
 */
 
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
 #include "examples.h"
 
+
+#define _LOADRFC	// if defined load RFC graph otherwise just run the matrices in examples.h
 #define _VERBOSE
 //#define _VVERBOSE
 #define _GOOGLEMATRIX			// initilise google matrix then run normal eigenvector alogrithm
 #define _LIMIT		50		// iteration limit 
-#define EPSILON		0.000001f	// steady state precision 
+#define EPSILON		0.001f		// steady state precision 
 #define DAMP_FACTOR	0.85
 
 /*
@@ -182,8 +185,29 @@ int main( int argc, char* argv[] ){
 		float A[ m ## _N ][ m ## _N ] = m;	\
 		float r[ m ## _N ] = { [ 0 ... ( ( m ## _N ) - 1 ) ] = 1.0f }
 
+#ifdef _LOADRFC
+	extern float* generate_matrix( const char*, int* n );
+	int n;
+	float (*A)[n] = ( float(*)[n] ) generate_matrix( argv[1], &n );
+	if( !A )
+		return ENOMEM;
+
+	float *r = malloc( sizeof( float ) * n );
+	if( !r ){
+		free( A );
+		return ENOMEM;
+	}
+
+	for( int i = 0; i < n; i++ )
+		r[i] = 1.0f;
+
+#undef _VERBOSE		// trust me you don't want to print that matrix out :)
+#undef _VVERBOSE
+
+#else	
 	// TODO: Change this to one of the examples 
 	INPUT_MATRIX( SIMPLE );
+#endif
 	
 	// init rows to be uniform distribution ( even if already so this will work ).
 	init_uniform( n, n, A );	
@@ -194,7 +218,8 @@ int main( int argc, char* argv[] ){
 #else		// if not using google matrix we still need to fix dangling links
 	fix_danglelink( n, A );	
 #endif
-	
+
+#undef _VERBOSE 	
 #ifdef _VERBOSE
 	printf("T:\n");	
 	mat_print( n, n, A );
@@ -206,8 +231,19 @@ int main( int argc, char* argv[] ){
 #else			// do teleportation every iteration
 	PageRank( n, r, A );
 #endif
+
 	printf("r:\n");
+#ifdef _LOADRFC
+	FILE* out = fopen("pagerank.txt", "w");
+	for( int i = 0; i < n; i++ )
+		fprintf( out, "%f,%d\n", r[i], i + 1 );
+	fclose( out );
+	
+	free( A );
+	free( r );
+#else
 	mat_print( 1, n, r );
+#endif
 	return 0;
 }
 
