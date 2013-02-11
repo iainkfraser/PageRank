@@ -10,7 +10,7 @@ algorithm. It is unrealistic because
 
 Having said that, it has the PageRank implementation and the plain eigenvector algorithm for
 homogeneous Markov chains. For more info please read the associated article at 
-iainkfraser.blogspot.co.uk coming out 6th Feb 2013 titled Surfendipity.
+iainkfraser.blogspot.co.uk titled Surfendipity.
 
 The algorithm is applied to RFC citations. The results of running it on the latest RFCs on Feb 10 2013
 are stored in pagerank.txt and order_pagerank.txt. The integer is the rfc number and the floating point
