@@ -15,3 +15,6 @@ iainkfraser.blogspot.co.uk coming out 6th Feb 2013 titled Surfendipity.
 The algorithm is applied to RFC citations. The results of running it on the latest RFCs on Feb 10 2013
 are stored in pagerank.txt and order_pagerank.txt. The integer is the rfc number and the floating point
 is the PageRank value.
+
+My boy Gianni Tedesco whipped up a program to correlate RFC's with their title - rfc_pagerank_with_titles.txt .
+
